@@ -22,7 +22,7 @@ with DAG(
 	default_args = default_args,
 	description="python_kubernetes_workflow",
 	schedule_interval=timedelta(minutes=60),
-	start_date=days_ago(2),
+	start_date=days_ago(0),
 	tags=["python_kubernetes_workflow"]
 ) as dag:
 	t1 = KubernetesPodOperator(

@@ -21,7 +21,7 @@ with DAG(
 	"python_kubernetes_workflow",
 	default_args = default_args,
 	description="python_kubernetes_workflow",
-	schedule_interval=timedelta(minutes=1),
+	schedule_interval=timedelta(minutes=60),
 	start_date=days_ago(2),
 	tags=["python_kubernetes_workflow"]
 ) as dag:

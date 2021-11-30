@@ -7,6 +7,9 @@ from airflow.utils.dates import days_ago
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 import os
 
+with open("pod_test.yaml", "r") as f:
+	print(f.readlines())
+
 default_args = {
 	"owner" : "airflow",
 	"depends_on_past" : False,
@@ -36,7 +39,8 @@ with DAG(
 		config_file=os.path.expanduser("~") + "/.kube.config",
 		get_logs = True
 	)
-
+	
+	print("FINISHED CREATING TASK 1")
 	t2 = KubernetesPodOperator(
 		namespace = "default",
 		image = "python:3.7",
@@ -51,4 +55,6 @@ with DAG(
 		get_logs = True
 	)
 
+	print("FINISHED CREATING TASK 2")
 	t1 >> t2
+print("FINISHED CREATING DAG")

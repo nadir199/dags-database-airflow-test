@@ -1,21 +1,19 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 
 kind: Job
 
 metadata:
   name: job-de-pod
-  
+
 spec:
-  
-  spec:
-    template:
-      spec:
-        containers:
-        - name: base-job-de-pod
-          image: "python:3.7" 
-          imagePullPolicy: Always
-          args: [ "python", "-c", "'import time; print(1999); time.sleep(10);'"]
-          # Specifies the mount points for the volumes in each job node
-        restartPolicy: Never                              
-        # Specifies the volumes to be added to the Apache Spark job deployment
+  template:
+    spec:
+      containers:
+      - name: base-job-de-pod
+        image: python:3.7
+        imagePullPolicy: Always        
+        args: [ "python", "-c", "'import time; print(1999); time.sleep(10);'"]
+        # Specifies the mount points for the volumes in each job node
+      restartPolicy: Never                              
+      # Specifies the volumes to be added to the Apache Spark job deployment
            

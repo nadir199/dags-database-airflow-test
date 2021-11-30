@@ -3,6 +3,7 @@ from datetime import timedelta
 from airflow import DAG
 
 from airflow.utils.dates import days_ago
+from airflow.operators.bash import BashOperator
 
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 import os

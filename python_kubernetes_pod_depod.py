@@ -27,16 +27,9 @@ with DAG(
 	start_date=days_ago(0),
 	tags=["test_pod"]
 ) as dag:
-	t1 = KubernetesPodOperator(
-		namespace = "default",
-		pod_template_file="pod_test.yaml",
-		labels =  {"foo":"bar"},
-		name = "task-depod",
-		is_delete_operator_pod = True,
-		in_cluster = True,
-		task_id = "task-depod",
-		config_file=os.path.expanduser("~") + "/.kube.config",
-		get_logs = True
+	t1 = BashOperator(
+		task_id = "first-pod-test",
+		bash_command = "kubectl -apply -f pod_test.yaml"
 	)
 	
 	print("FINISHED CREATING TASK 1")

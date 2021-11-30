@@ -7,8 +7,7 @@ from airflow.utils.dates import days_ago
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 import os
 
-with open("pod_test.yaml", "r") as f:
-	print(f.readlines())
+print("STARTING DAG POD DEPOD CREATION")
 
 default_args = {
 	"owner" : "airflow",

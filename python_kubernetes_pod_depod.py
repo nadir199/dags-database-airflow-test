@@ -29,10 +29,11 @@ with DAG(
 ) as dag:
 	t1 = BashOperator(
 		task_id = "first-pod-test",
-		bash_command = "kubectl -apply -f pod_test.yaml"
+		bash_command = "kubectl apply -f pod_test.yaml"
 	)
 	
-	print("FINISHED CREATING TASK 1")
+	print("FINISHED CREATING TASK 1 KUBECTL APPLY")
+
 	t2 = KubernetesPodOperator(
 		namespace = "default",
 		image = "python:3.7",

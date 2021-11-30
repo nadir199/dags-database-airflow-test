@@ -1,0 +1,55 @@
+apiVersion: batch/v1beta1
+
+kind: CronJob
+
+metadata:
+  name: apao-spark-merge-job
+  
+spec:
+  # Execute every 5 minutes
+  schedule: "*/5 * * * *"
+  #startingDeadlineSeconds: 20
+  concurrencyPolicy : Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: spark-call-message-job
+            image: "{{ .Values.spark.image.registry }}/{{ .Values.spark.image.repository }}:{{ .Values.spark.image.tag | default .Chart.AppVersion }}" 
+            imagePullPolicy: {{ .Values.spark.image.pullPolicy }}
+            args: [ "spark-submit", "--properties-file", "/tmp/app/properties", "--class", "MergeApp", "--master", "spark://{{ .Release.Name }}-spark-master-svc:{{ .Values.spark.service.clusterPort | default 7077 }}", "--deploy-mode", "client", "local:///opt/bitnami/spark/upload/merge-project_2.12-1.0.jar" ]
+            # Specifies the mount points for the volumes in each job node
+            volumeMounts:
+              - name: apao-spark-config
+                mountPath: /tmp/app/config.json
+                subPath: config.json
+                readOnly: true
+              - mountPath: /tmp/call_message/data
+                name: call-message-data
+              - mountPath: /tmp/edge/data
+                name: edge-data
+          restartPolicy: Never                              
+          # Specifies the volumes to be added to the Apache Spark job deployment
+          volumes:
+            - name: apao-spark-config
+              configMap:
+                name: "{{ .Release.Name }}-apao-spark-env"
+                items:
+                  - key: config.json
+                    path: config.json
+            - name: call-message-data
+              persistentVolumeClaim:
+                claimName: "{{ .Release.Name }}-spark-call-message-vc-data"
+            - name: edge-data
+              persistentVolumeClaim:
+                claimName: "{{ .Release.Name }}-spark-edge-vc-data"
+          initContainers:
+          - name: wait-for-apao-spark
+            image: busybox
+            env:
+            - name: API_HOST
+              value: {{ .Release.Name }}-spark-master-svc
+            - name: API_PORT
+              value: "{{  .Values.spark.service.clusterPort | default 7077 }}"
+            command: ['sh', '-c', 'until nc -w3 -z $API_HOST $API_PORT ; do echo waiting for spark-master; sleep 3; done;']   

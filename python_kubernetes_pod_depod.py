@@ -28,6 +28,11 @@ with DAG(
 	start_date=days_ago(0),
 	tags=["test_pod"]
 ) as dag:
+	tt = BashOperator(
+		task_id = "dummy",
+		bash_command = "echo TESTDUMMY"
+	)
+
 	t1 = BashOperator(
 		task_id = "first-pod-test",
 		bash_command = "kubectl apply -f pod_test.yaml"
@@ -50,5 +55,5 @@ with DAG(
 	)
 
 	print("FINISHED CREATING TASK 2")
-	t1 >> t2
+	tt >> t1 >> t2
 print("FINISHED CREATING DAG")

@@ -32,12 +32,27 @@ with DAG(
 		task_id = "dummy",
 		bash_command = "echo TESTDUMMY"
 	)
-
+'''
 	t1 = BashOperator(
 		task_id = "first-pod-test",
 		bash_command = "kubectl apply -f pod_test.yaml"
 	)
-	
+'''
+
+	t1 = KubernetesPodOperator(
+		namespace = "default",
+		image = "python:3.7",
+		image_pull_policy = "Always",
+		cmds = ["python -c", "print('FIRST POD TASK')"],
+		labels = {"foo":"bar"},
+		name = "task-1-hdep",
+		is_delete_operator_pod = True,
+		in_cluster = True,
+		task_id = "task-1-hdep",
+		config_file = os.path.expanduser("~") + "/.kube.config",
+		get_logs = True
+
+	)
 	print("FINISHED CREATING TASK 1 KUBECTL APPLY")
 
 	t2 = KubernetesPodOperator(

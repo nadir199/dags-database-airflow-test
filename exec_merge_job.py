@@ -35,7 +35,7 @@ with DAG(
 
 	t1 = KubernetesPodOperator(
 		namespace = "default",
-		pod_template_file = "/opt/airflow/dags/repo/pod_job_merge.yaml",
+		pod_template_file = "/opt/airflow/dags/repo/templates/pod_mode_apao_spark_merge.yaml",
 		labels = {"foo":"bar"},
 		name = "merging_task",
 		is_delete_operator_pod = True,

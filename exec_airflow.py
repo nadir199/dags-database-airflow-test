@@ -8,7 +8,7 @@ from airflow.operators.bash import BashOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 import os
 
-print("STARTING DAG POD DEPOD CREATION")
+print("STARTING DG CREATION")
 
 default_args = {
 	"owner" : "airflow",
@@ -21,9 +21,9 @@ default_args = {
 }
 
 with DAG(
-	"python_kubernetes_pod_depod",
+	"exec_airflow",
 	default_args = default_args,
-	description="python_kubernetes_pod_depod",
+	description="exec_airflow",
 	schedule_interval=timedelta(minutes=60),
 	start_date=days_ago(0),
 	tags=["test_pod"]
@@ -32,6 +32,8 @@ with DAG(
 		task_id = "dummy",
 		bash_command = "echo TESTDUMMY"
 	)
+
+	print("FINISHED BASH COMMAND")
 
 	t1 = KubernetesPodOperator(
 		namespace = "default",
@@ -45,6 +47,7 @@ with DAG(
 		get_logs = True
 
 	)
+
 	print("FINISHED CREATING TASK 1 POD TEST")
 
 	tt >> t1

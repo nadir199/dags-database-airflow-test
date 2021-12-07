@@ -37,7 +37,7 @@ with DAG(
 		namespace = "default",
 		image = "python:3.7",
 		image_pull_policy = "Always",
-		cmds = ["python -c", "print('FIRST POD TASK')"],
+		cmds = ["python", "-c", "print('FIRST POD TASK')"],
 		labels = {"foo":"bar"},
 		name = "task-1-hdep",
 		is_delete_operator_pod = True,

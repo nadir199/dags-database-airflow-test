@@ -32,12 +32,6 @@ with DAG(
 		task_id = "dummy",
 		bash_command = "echo TESTDUMMY"
 	)
-'''
-	t1 = BashOperator(
-		task_id = "first-pod-test",
-		bash_command = "kubectl apply -f pod_test.yaml"
-	)
-'''
 
 	t1 = KubernetesPodOperator(
 		namespace = "default",

@@ -1,6 +1,6 @@
 apiVersion: batch/v1beta1
 
-kind: Job
+kind: Pod
 
 metadata:
   name: apao-spark-merge-job

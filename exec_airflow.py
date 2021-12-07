@@ -40,7 +40,7 @@ with DAG(
 		pod_template_file = "/opt/airflow/dags/repo/pod_test.yaml",
 		labels = {"foo":"bar"},
 		name = "task-1-hdep",
-		is_delete_operator_pod = False,
+		is_delete_operator_pod = True,
 		in_cluster = True,
 		task_id = "task-1-hdep",
 		config_file = os.path.expanduser("~") + "/.kube.config",

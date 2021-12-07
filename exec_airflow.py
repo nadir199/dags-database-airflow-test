@@ -37,7 +37,7 @@ with DAG(
 
 	t1 = KubernetesPodOperator(
 		namespace = "default",
-		pod_template_file = "./pod_test.yaml",
+		pod_template_file = "/opt/airflow/dags/repo/pod_test.yaml",
 		labels = {"foo":"bar"},
 		name = "task-1-hdep",
 		is_delete_operator_pod = False,

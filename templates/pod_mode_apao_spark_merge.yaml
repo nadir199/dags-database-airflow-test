@@ -12,7 +12,7 @@ spec:
   - name: spark-call-message-job
     image: "docker.io/apao_spark:latest" 
     imagePullPolicy: IfNotPresent
-    args: [ "spark-submit", "--properties-file", "/tmp/app/properties", "--class", "MergeApp", "--master", "spark://RELEASE-NAME-spark-master-svc:7077", "--deploy-mode", "client", "local:///opt/bitnami/spark/upload/merge-project_2.12-1.0.jar" ]
+    args: [ "spark-submit", "--properties-file", "/tmp/app/properties", "--class", "MergeApp", "--master", "spark://apao-service-spark-master-svc:7077", "--deploy-mode", "client", "local:///opt/bitnami/spark/upload/merge-project_2.12-1.0.jar" ]
     # Specifies the mount points for the volumes in each job node
     volumeMounts:
       - name: apao-spark-config
@@ -28,16 +28,16 @@ spec:
   volumes:
     - name: apao-spark-config
       configMap:
-        name: "RELEASE-NAME-apao-spark-env"
+        name: "apao-service-apao-spark-env"
         items:
           - key: config.json
             path: config.json
     - name: call-message-data
       persistentVolumeClaim:
-        claimName: "RELEASE-NAME-spark-call-message-vc-data"
+        claimName: "apao-service-spark-call-message-vc-data"
     - name: edge-data
       persistentVolumeClaim:
-        claimName: "RELEASE-NAME-spark-edge-vc-data"
+        claimName: "apao-service-spark-edge-vc-data"
   initContainers:
   - name: wait-for-apao-spark
     image: busybox
